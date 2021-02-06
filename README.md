@@ -1,5 +1,9 @@
 # DevDashboard
+
 ### A dashboard for developers centralizing and customizing small tools complementary to development.
+
+`Current design and widgets`
+![example img](img/example.png)
 
 **DISCLAIMER**: The development of this app is in progress. Use it at your own risk! The authors decline all responsibility. The app is not ready to be used (ready starting version 1.0 on `main` branch).
 
