@@ -4,7 +4,7 @@ const DevDConst = {
     return {
       appDescription:
         "A dashboard for developers centralizing and customizing small tools complementary to development.",
-      appVersion: "0.3",
+      appVersion: "v0.3",
       appVersionDate: "06.02.2021",
       authorFullname: "Samuel Roland",
       authorProfileLink: "https://github.com/samuelroland",

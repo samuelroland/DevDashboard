@@ -2,10 +2,10 @@
 DevD.component("strings-stats", {
   template:
     /*html*/
-    `<div id="divStringsStats" class="divRectangle">
-    <h2>Strings stats</h2>
+    `<div id="divStringsStats" class="border-solid border-2 border-blue-600 p-2 rounded-lg">
+    <h2 class="text-3xl py-1">Strings stats</h2>
     <label for="txtarea"></label>
-    <textarea v-bind:class="txtCssClasses" id="txtarea" rows="5"
+    <textarea class="focus:border-blue-800 border-solid border-2 border-blue-200 rounded-sm p-1 w-full" id="txtarea" rows="5"
               placeholder="Paste your string here..."
               v-model="content" v-on:input="calculateAllStats">
     </textarea>

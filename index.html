@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>DevDashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <!--  <link rel="stylesheet" href="style.css" />-->
   <script src="node_modules/vue/dist/vue.global.js"></script>
+  <link rel="stylesheet" href="node_modules/tailwindcss/dist/tailwind.css">
   <script src="cred.js"></script>
 </head>
 <!--
@@ -20,18 +21,18 @@
   -->
 
 <body>
-  <div id="bodyApp">
+  <div id="bodyApp" class="p-2 font-mono bg-yellow-100">
     <div>
-      <h1 style="display: inline" class="hTitle">DevDashboard</h1>
-      <em :title="'Released the ' + appVersionDate"><code style="font-size: 1.2em"> v{{ appVersion }}</code></em>
-      <br>by <em><code style="font-size: 1.2em"><a :href="authorProfileLink">{{ authorFullname }}</a></code></em>
-      <span style="margin-left: 50px">
-        <a href="https://github.com/samuelroland/DevDashboard">Source on GitHub</a>
-      </span>
-      <h3>{{ appDescription }}</h3>
-      <hr />
+      <h1 class="text-5xl inline">DevDashboard</h1>
+      <code class="text-lg italic pl-2" :title="'Released the ' + appVersionDate">{{ appVersion }}</code><br>
+      <code class="italic"><a :href="authorProfileLink" class="hover:underline text-blue-600">by {{ authorFullname }}</a>.
+        <a href="https://github.com/samuelroland/DevDashboard" class="hover:underline text-blue-600">Source on GitHub.</a>
+      </code>
+
+      <h3 class="text-xl">{{ appDescription }}</h3>
+      <hr class="bg-blue-800 leading-4 border-blue-800 border-solid my-2">
     </div>
-    <div id="divWidgets">
+    <div id="divWidgets" class="flex flex-wrap">
       <strings-stats></strings-stats>
       <wikipedia-search></wikipedia-search>
       <deepl-translation></deepl-translation>
