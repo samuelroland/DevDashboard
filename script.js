@@ -3,10 +3,11 @@ const DevDConst = {
   data() {
     return {
       appDescription:
-        "An evolving dashboard with widgets that help you develop apps with lots of external tools collected and personalized in one web page.",
       appVersion: "0.2",
       appVersionDate: "01.01.2021",
+        "A dashboard for developers centralizing and customizing small tools complementary to development.",
       authorFullname: "Samuel Roland",
+      authorProfileLink: "https://github.com/samuelroland",
     };
   },
 };
