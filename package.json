@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "tailwindcss": "^2.0.2",
     "vue": "^3.0.5"
   }
 }
