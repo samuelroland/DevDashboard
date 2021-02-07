@@ -3,9 +3,9 @@ DevD.component("wikipedia-search", {
   template:
     /*html*/
     `<div class="border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
-    <widget-header name="Wikipedia Search" version="v0.1"></widget-header>
+    <widget-header name="Wikipedia Search" version="v0.2"></widget-header>
       <div class="max-w-xl min-h-">
-          <p><input type="text" placeholder="Pick a word" v-model="word">
+          <p><input type="text" placeholder="Pick a word" v-model="word" class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500">
               <comp-button :disabled="isDisabled" name="Search it!" eventname="search-onclick" link=""></comp-button>
               <comp-button :disabled="isDisabled" :name="GoOnPage" eventname="" :link="computedLink"></comp-button>
           </p>

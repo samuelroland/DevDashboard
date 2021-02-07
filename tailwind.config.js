@@ -11,6 +11,7 @@ module.exports = {
     extend: {
       opacity: ["disabled"],
       textColor: ["disabled"],
+      borderWidth: ["hover", "focus"],
     },
   },
   plugins: [],

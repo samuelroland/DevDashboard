@@ -2,26 +2,28 @@
 DevD.component("repos-info", {
   template:
     /*html*/
-    `<div class="border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
-    <widget-header name="Repos info" version="v0.1"></widget-header>
-    <input type="text" placeholder="author/repos" v-model="reposId" v-on:input="isReposIdValid">
-    <button v-on:click="loadInformation" v-bind:disabled="isReposIdValidState">Search</button>
-    <button v-on:click="goToReposOnGithub" v-bind:disabled="isReposIdValidState">Go to Repos</button>
-    <button v-on:click="goToOwnerOnGithub" v-bind:disabled="isReposIdValidState">Go to Owner</button>
-    <div class="flexdiv">
-        <div class="flex-1">
-            <div>Description: <em>{{ description }}</em></div>
-            <div>Stars: {{ nbStars }}</div>
-            <div>Commits: {{ nbCommits }}</div>
-            <div v-if="releaseFound">Last release: <br>{{ lastReleaseName }}</div>
+    `<div class="max-w-2xl h-min border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+    <widget-header name="Repos info" version="v0.2"></widget-header>
+    <input class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500" type="text" placeholder="author/repos" v-model="reposId" v-on:input="isReposIdValid">
+    
+    <comp-button name="Search" eventname="search-click" @search-click="loadInformation" link="" :disabled="isReposIdValidState"></comp-button>
+    <comp-button name="Go to Repos" eventname="gotorepos-click" @gotorepos-click="goToReposOnGithub" link="" :disabled="isReposIdValidState"></comp-button>
+    <comp-button name="Go to Owner" eventname="gotoowner-click" @gotoowner-click="goToOwnerOnGithub" link="" :disabled="isReposIdValidState"></comp-button>
+    <div class="flexdiv" :class="{ invisible: !loadHasStarted }">
+        <div class="flex-1" >
+            <div class="italic">{{ description }}</div>
+            <span>Stars: {{ nbStars }}</span>
+            <span> | Commits: {{ nbCommits }}</span>
+            <span v-if="releaseFound"> | {{ lastReleaseName }}</span>
         </div>
-        <div class="flexdiv ">
-            <div class="p-2">
-                <img class="avatar-img" v-bind:src="imgOwnerSrc" v-if="isLoaded"
+        <hr class="bg-blue-800 leading-4 border-blue-800 border-solid my-2">
+        <div class="flex">
+            <div class="py-2">
+                <img class="w-16" v-bind:src="imgOwnerSrc" v-if="isLoaded"
                      alt="image of the repos owner">
             </div>
-            <div class="p-2">
-                <div>Owner: {{ ownerFullname }} - {{ ownerUsername }}</div>
+            <div class="px-2">
+                <div class="text-lg">{{ ownerFullname }} - {{ ownerUsername }}</div>
                 <div>Bio: <em>{{ ownerBio }}</em></div>
             </div>
         </div>
@@ -30,6 +32,7 @@ DevD.component("repos-info", {
   data() {
     return {
       isLoaded: false,
+      loadHasStarted: false,
       reposId: "samuelroland/KanFF",
       isReposIdValidState: false,
       description: "",
@@ -45,6 +48,7 @@ DevD.component("repos-info", {
   },
   methods: {
     async loadInformation() {
+      this.loadHasStarted = true;
       httpAddedInformation = {
         headers: {
           Authorization: "token " + githubApiToken2,
