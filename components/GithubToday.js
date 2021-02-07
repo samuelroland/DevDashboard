@@ -2,11 +2,10 @@
 DevD.component("github-today", {
   template:
     /*html*/
-    `<div id="githubToday" class="divRectangle">
-    <div class="flexdiv">
-        <h2>GitHub today contributions</h2>
+    `<div class="border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+    <widget-header name="GitHub Today" version="v0.1"></widget-header>
         <!--<div>{{ dateOfToday }}</div>-->
-    </div>
+asdfasdfasdfsafasfdasfdasdfsadfasdfasdfasdfsafd
 </div>`,
   data() {
     return {

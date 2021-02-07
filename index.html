@@ -23,8 +23,9 @@
 <body>
   <div id="bodyApp" class="p-2 font-mono bg-yellow-100">
     <div>
-      <h1 class="text-5xl inline">DevDashboard</h1>
-      <code class="text-lg italic pl-2" :title="'Released the ' + appVersionDate">{{ appVersion }}</code><br>
+      <h1 class="text-5xl inline text-yellow-500">DevDashboard</h1>
+      <code class="text-lg italic pl-2 text-gray-500"
+        :title="'Released the ' + appVersionDate">{{ appVersion }}</code><br>
       <code class="italic"><a :href="authorProfileLink" class="hover:underline text-blue-600">by {{ authorFullname }}</a>.
         <a href="https://github.com/samuelroland/DevDashboard" class="hover:underline text-blue-600">Source on GitHub.</a>
       </code>

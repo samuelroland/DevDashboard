@@ -2,8 +2,8 @@
 DevD.component("wikipedia-search", {
   template:
     /*html*/
-    `<div id="divWikipedia" class="divRectangle">
-        <h2>{{ name }}</h2>
+    `<div class="border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+    <widget-header name="Wikipedia Search" version="v0.1"></widget-header>
         <p><input type="text" placeholder="Pick a word">
             <button>Search it!</button>
             <button>Go on the page X</button>

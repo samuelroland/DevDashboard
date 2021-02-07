@@ -2,8 +2,8 @@
 DevD.component("deepl-translation", {
   template:
     /*html*/
-    `<div id="divDeeplTranslate" class="divRectangle">
-        <h2>DeepL Translate</h2>
+    `<div class="border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+    <widget-header name="DeepL Translate" version="v0.1"></widget-header>
         <label for="sltLanguageSource">Source language</label>
         <select id="sltLanguageSource">
             <option value="fr">French</option>

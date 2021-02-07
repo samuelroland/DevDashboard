@@ -2,8 +2,8 @@
 DevD.component("repos-info", {
   template:
     /*html*/
-    `<div id="githubReposInfo" class="divRectangle">
-    <h2>Repos information</h2>
+    `<div class="border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+    <widget-header name="Repos info" version="v0.1"></widget-header>
     <input type="text" placeholder="author/repos" v-model="reposId" v-on:input="isReposIdValid">
     <button v-on:click="loadInformation" v-bind:disabled="isReposIdValidState">Search</button>
     <button v-on:click="goToReposOnGithub" v-bind:disabled="isReposIdValidState">Go to Repos</button>
