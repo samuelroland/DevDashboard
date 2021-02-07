@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-yellow-100 h-full">
 
 <head>
   <meta charset="UTF-8" />
@@ -20,8 +20,8 @@
      */
   -->
 
-<body>
-  <div id="bodyApp" class="p-2 font-mono bg-yellow-100">
+<body class="max-h-full">
+  <div id="bodyApp" class="p-2 font-mono font-bold">
     <div>
       <h1 class="text-5xl inline text-yellow-500">DevDashboard</h1>
       <code class="text-lg italic pl-2 text-gray-500"
@@ -40,6 +40,35 @@
       <github-today></github-today>
       <repos-info></repos-info>
       <work-timer></work-timer>
+    </div>
+
+    <p class="pt-5 text-lg">Temp component for develop:</h2><br>
+    <div class="w-80 border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+      <widget-header name="Work Timer" version="v0.1"></widget-header>
+      <div class="flex w-full">
+        <div class="flex-1">
+          <comp-button :disabled="startBtnDisabled" name="Start" eventname="start-click" @start-click="startCounter"
+            link=""></comp-button><br>
+          <div class="py-1">
+            <comp-button :disabled="breakBtnDisabled" name="Pause" eventname="break-click" @break-click="breakCounter"
+              link=""></comp-button>
+          </div>
+        </div>
+        <div>
+          <div class="pt-1 justify-end flex">
+            <span class="mr-2">Work Timer</span>
+            <input type="text"
+              class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500 w-16"
+              v-model="currentWorkTime" disabled>
+          </div>
+          <div class="pt-1 justify-end flex">
+            <span class="mr-2">Break Timer</span>
+            <input type="text"
+              class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500 w-16"
+              v-model="currentBreakTime" disabled>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <script src="script.js"></script>
