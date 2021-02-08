@@ -45,7 +45,7 @@
     <p class="pt-5 text-lg">Temp component for develop:</h2><br>
     <div class="w-80 border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
       <widget-header name="Work Timer" version="v0.1"></widget-header>
-      <div class="flex w-full">
+      <div class="divtop flex w-full">
         <div class="flex-1">
           <comp-button :disabled="startBtnDisabled" name="Start" eventname="start-click" @start-click="startCounter"
             link=""></comp-button><br>
@@ -66,6 +66,25 @@
             <input type="text"
               class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500 w-16"
               v-model="currentBreakTime" disabled>
+          </div>
+        </div>
+      </div>
+      <div class="divbottom flex w-full pt-3">
+        <div class="flex-1">
+          <h4 class="text-lg">Total work time: {{ totalTime }}</h4>
+          <h4 class="text-lg">Total break time: {{ totalTime }}</h4>
+          <input type="text" placeholder="Done part name"
+            class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500">
+          <comp-button name="New part" eventname="newpart-click" @newpart-click="newPart" link=""></comp-button>
+        </div>
+        <div class="">
+          <div class="break-words word border border-blue-200 max-w-min">
+            <h6 class="text-xl">Saved parts</h6>
+            <div>
+              <ol>
+                <li v-for="part in parts">{{ part.number + " - " + part.humanTime}}</li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>
