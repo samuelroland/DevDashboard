@@ -2,7 +2,7 @@
 DevD.component("work-timer", {
   template:
     /*html*/
-    `<div class="w- border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+    `<div class="border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
     <widget-header name="Work Timer" version="v0.1"></widget-header>
     <div class="flex">
     <div class="divtop w-full">
@@ -44,7 +44,7 @@ DevD.component("work-timer", {
           <h6 class="text-xl">Saved parts</h6>
           <div>
             <ol>
-              <li class="hover:bg-yellow-400 pl-1 cursor-pointer" v-for="part in parts">{{ part.number + ". " + part.name + " - " + part.humanTime}} <img src="icons/checked.png" class="inline w-4" v-if="part.validated" /></li>
+              <li class="hover:bg-yellow-400 pl-1 cursor-pointer" v-for="part in parts">{{ part.number + ". " + this.fulldate(part.start) + " - " + part.humanTime}} <img src="icons/checked.png" class="inline w-4" v-if="part.validated" /></li>
             </ol>
           </div>
           <div>
@@ -65,7 +65,7 @@ DevD.component("work-timer", {
           <option value="12">Cours Matu</option>
           <option value="13">Test</option></select>
           <br>Converted time:<br>
-          <input class="w-10" type="text" name="duration" step="0.5" max="10" min="0.5" value="4.5" disabled v-model="currentPartConvertedTime"><br>
+          <input class="w-10 px-1" type="text" name="duration" step="0.5" max="10" min="0.5" value="4.5" disabled v-model="currentPartConvertedTime"><br>
           <textarea class="mt-1 w-full p-1" placeholder="Describe what was the work in this part...">{{ currentPartText }}</textarea>
           <comp-button name="Save here" eventname="" link="asdf">Save here</comp-button>
           </div>
@@ -88,26 +88,41 @@ DevD.component("work-timer", {
         {
           number: 1,
           validated: true,
-          name: "partie cool",
+          text: "test texte",
+          start: new Date("2020-03-04"),
+          end: Date("2020-02-02"),
           humanTime: "156 min",
         },
         {
-          number: 2,
-          validated: false,
-          name: "partie salut",
-          humanTime: "3 min",
+          number: 1,
+          validated: true,
+          text: "test texte",
+          start: new Date("2020-03-04"),
+          end: Date("2020-02-02"),
+          humanTime: "156 min",
         },
         {
-          number: 3,
+          number: 1,
           validated: true,
-          name: "partie chouette",
-          humanTime: "3 min",
+          text: "test texte",
+          start: new Date("2020-03-04"),
+          end: Date("2020-02-02"),
+          humanTime: "156 min",
         },
       ],
     };
   },
   methods: {
     startCounter() {},
+    fulldate(date) {
+      return (
+        date.getDate() +
+        "." +
+        (date.getUTCMonth() + 1) +
+        "." +
+        date.getFullYear()
+      );
+    },
   },
   computed: {
     currentPartConvertedTime() {
