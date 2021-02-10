@@ -2,8 +2,8 @@ DevD.component("widget-header", {
   template:
     /*html*/
     `<div class="flex w-full" @mouseover="widgetMouseOver = true" @mouseout="widgetMouseOver = false">
-        <h2 class="text-3xl py-1 flex-1">{{ name }}</h2>
-        <span v-if="widgetMouseOver" class="items-end py-1 flex text-gray-400">{{ version }}</span>
+        <h2 class="flex-1 py-1 text-3xl">{{ name }}</h2>
+        <span v-if="widgetMouseOver" class="flex items-end py-1 text-gray-400">{{ version }}</span>
       </div>`,
   props: {
     name: {

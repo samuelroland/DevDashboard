@@ -2,9 +2,9 @@
 DevD.component("strings-stats", {
   template:
     /*html*/
-    `<div class="border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+    `<div class="p-2 m-1 border-2 border-blue-600 border-solid rounded-lg">
     <widget-header name="Strings stats" version="v0.2"></widget-header>
-    <textarea class="focus:border-blue-800 border-solid border-2 border-blue-200 rounded-sm p-1 w-full" id="txtarea" rows="5"
+    <textarea class="w-full p-1 border-2 border-blue-200 border-solid rounded-sm focus:border-blue-800" id="txtarea" rows="5"
               placeholder="Paste your string here..."
               v-model="content" v-on:input="calculateAllStats">
     </textarea>

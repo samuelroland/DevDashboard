@@ -1,7 +1,7 @@
 DevD.component("comp-button", {
   template:
     /*html*/
-    `<button class="disabled:text-white hover:bg-green-300 ml-0 mr-1 px-1 border-solid border border-green-500 rounded-lg bg-green-200" @click="launchClickActions" :disabled="isDisabled">{{ name }}</button>`,
+    `<button class="px-1 ml-0 mr-1 bg-green-200 border border-green-500 border-solid rounded-lg disabled:text-white hover:bg-green-300" @click="launchClickActions" :disabled="isDisabled">{{ name }}</button>`,
   props: {
     name: {
       required: true,

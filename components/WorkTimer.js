@@ -2,10 +2,10 @@
 DevD.component("work-timer", {
   template:
     /*html*/
-    `<div class="border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+    `<div class="p-2 m-1 border-2 border-blue-600 border-solid rounded-lg">
     <widget-header name="Work Timer" version="v0.1"></widget-header>
     <div class="flex">
-    <div class="divtop w-full">
+    <div class="w-full divtop">
       <div class="inline-block">
         <comp-button :disabled="startBtnDisabled" name="Start" eventname="start-click" @start-click="startCounter"
           link=""></comp-button>
@@ -13,16 +13,16 @@ DevD.component("work-timer", {
             link=""></comp-button>
       </div>
       <div>
-        <div class="pt-1 justify-end flex">
+        <div class="flex justify-end pt-1">
           <span class="mr-2">Work Timer</span>
           <input type="text"
-            class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500 w-16"
+            class="w-16 px-1 bg-blue-100 border border-blue-400 border-solid rounded focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500"
             v-model="currentWorkTime" disabled>
         </div>
-        <div class="pt-1 justify-end flex">
+        <div class="flex justify-end pt-1">
           <span class="mr-2">Break Timer</span>
           <input type="text"
-            class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500 w-16"
+            class="w-16 px-1 bg-blue-100 border border-blue-400 border-solid rounded focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500"
             v-model="currentBreakTime" disabled>
         </div>
       </div>
@@ -31,7 +31,7 @@ DevD.component("work-timer", {
         <h4 class="text-lg">Total work time: {{ totalTime }}</h4>
         <h4 class="text-lg">Total break time: {{ totalTime }}</h4>
         <input type="text" placeholder="Done part name"
-          class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500">
+          class="px-1 bg-blue-100 border border-blue-400 border-solid rounded focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500">
         <br>
         <div class="pt-1">
         <comp-button name="New part" eventname="newpart-click" @newpart-click="newPart" link=""></comp-button>
@@ -39,16 +39,16 @@ DevD.component("work-timer", {
       </div>
     </div>
     <div>
-      <div class="w-80 pl-3">
-        <div class="break-words word border-2 border-blue-400 w-full h-full rounded p-2">
+      <div class="pl-3 w-80">
+        <div class="w-full h-full p-2 break-words border-2 border-blue-400 rounded word">
           <h6 class="text-xl">Saved parts</h6>
           <div>
             <ol>
-              <li class="hover:bg-yellow-400 pl-1 cursor-pointer" v-for="part in parts">{{ part.number + ". " + this.fulldate(part.start) + " - " + part.humanTime}} <img src="icons/checked.png" class="inline w-4" v-if="part.validated" /></li>
+              <li class="pl-1 cursor-pointer hover:bg-yellow-400" v-for="part in parts">{{ part.number + ". " + this.fulldate(part.start) + " - " + part.humanTime}} <img src="icons/checked.png" class="inline w-4" v-if="part.validated" /></li>
             </ol>
           </div>
           <div>
-          <hr class="border border-blue-400 my-1">
+          <hr class="my-1 border border-blue-400">
           Choose a type: <br>
           <select name="activitytype">
           <option value="1">Maintenance</option>
@@ -66,7 +66,7 @@ DevD.component("work-timer", {
           <option value="13">Test</option></select>
           <br>Converted time:<br>
           <input class="w-10 px-1" type="text" name="duration" step="0.5" max="10" min="0.5" value="4.5" disabled v-model="currentPartConvertedTime"><br>
-          <textarea class="mt-1 w-full p-1" placeholder="Describe what was the work in this part...">{{ currentPartText }}</textarea>
+          <textarea class="w-full p-1 mt-1" placeholder="Describe what was the work in this part...">{{ currentPartText }}</textarea>
           <comp-button name="Save here" eventname="" link="asdf">Save here</comp-button>
           </div>
         </div>

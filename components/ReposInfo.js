@@ -2,9 +2,9 @@
 DevD.component("repos-info", {
   template:
     /*html*/
-    `<div class="max-w-2xl h-min border-solid border-2 border-blue-600 m-1 p-2 rounded-lg">
+    `<div class="max-w-2xl p-2 m-1 border-2 border-blue-600 border-solid rounded-lg h-min">
     <widget-header name="Repos info" version="v0.2"></widget-header>
-    <input class="rounded px-1 bg-blue-100 border-solid border border-blue-400 focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500" type="text" placeholder="author/repos" v-model="reposId" v-on:input="isReposIdValid">
+    <input class="px-1 bg-blue-100 border border-blue-400 border-solid rounded focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500" type="text" placeholder="author/repos" v-model="reposId" v-on:input="isReposIdValid">
     
     <comp-button name="Search" eventname="search-click" @search-click="loadInformation" link="" :disabled="isReposIdValidState"></comp-button>
     <comp-button name="Go to Repos" eventname="gotorepos-click" @gotorepos-click="goToReposOnGithub" link="" :disabled="isReposIdValidState"></comp-button>
@@ -16,7 +16,7 @@ DevD.component("repos-info", {
             <span> | Commits: {{ nbCommits }}</span>
             <span v-if="releaseFound"> | {{ lastReleaseName }}</span>
         </div>
-        <hr class="bg-blue-800 leading-4 border-blue-800 border-solid my-2">
+        <hr class="my-2 bg-blue-800 border-blue-800 border-solid leading-4">
         <div class="flex">
             <div class="py-2">
                 <img class="w-16" v-bind:src="imgOwnerSrc" v-if="isLoaded"
