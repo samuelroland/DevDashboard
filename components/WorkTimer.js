@@ -129,13 +129,15 @@ DevD.component("work-timer", {
     workCounter() {
       console.log("workcounter");
       setInterval(() => {
+        //start interval of reloading set to 10 seconds
         this.diffTimeBetweenStartAndNow = this.diffTimeInHours(
+          //compare start date of the current count and now
           this.currentCount.start,
           new Date(),
           false,
           true
         );
-      }, 1000);
+      }, 10000);
       this.currentCount = this.initPart();
     },
     initPart() {
@@ -198,7 +200,7 @@ DevD.component("work-timer", {
         return diffInDate;
       }
       nbHours =
-        diffInDate.getHours() + "." + diffInDate.getMinutes().toFixed(0);
+        diffInDate.getHours() + "." + (diffInDate.getMinutes() / 60).toFixed(2);
       if (humanValue == true) {
         nbHours += "h";
       }
@@ -270,11 +272,14 @@ DevD.component("work-timer", {
         console.log(diff);
         diffInDate = new Date(diff);
         nbHours =
-          diffInDate.getHours() - 1 + "." + diffInDate.getMinutes().toFixed(0);
+          diffInDate.getHours() -
+          1 +
+          "." +
+          (diffInDate.getMinutes() / 60).toFixed(0);
         total += parseFloat(nbHours);
         console.log(total);
       });
-      total += "h";
+      total = total.toFixed(2) + "h";
       return total; //calculate the total work time with all parts
     },
     totalBreakTime() {
