@@ -17,7 +17,7 @@ DevD.component("work-timer", {
           <span class="mr-2">Work Timer</span>
           <input type="text"
             class="w-16 px-1 bg-blue-100 border border-blue-400 border-solid rounded focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500"
-            v-model="currentWorkTimer" disabled>
+            v-model="currentWorkTimerInHoursMinutes" disabled>
         </div>
         <div class="flex justify-end pt-1">
           <span class="mr-2">Break Timer</span>
@@ -31,7 +31,7 @@ DevD.component("work-timer", {
         <h4 class="text-lg">Total work time: {{ totalWorkTime }}</h4>
         <h4 class="text-lg">Total break time: {{ totalBreakTime }}</h4>
         <div class="pt-1">
-        <comp-button name="New part" eventname="newpart-click" @newpart-click="saveNewPartForm" link=""></comp-button>
+        <comp-button name="New part" eventname="newpart-click" @newpart-click="saveNewPartFromTimers" link=""></comp-button>
         </div>
       </div>
     </div>
@@ -40,6 +40,7 @@ DevD.component("work-timer", {
         <div class="w-full h-full p-2 break-words border-2 border-blue-400 rounded word">
           <h6 class="text-xl">Saved parts</h6>
           <div>
+          <p v-if="parts.length == 0" class="italic text-gray-400 font-normal">Aucune partie...</p>
             <ol>
               <li class="pl-1 cursor-pointer hover:bg-yellow-400" v-for="part in parts" :class="{'bg-yellow-300': thePartIsSelected(part.id)}" @click="loadPart(part.id)">{{ part.id + ". " + this.timeInHourMinutes(part.start) + "-" + this.timeInHourMinutes(part.end) + " - " + diffTimeInHours(part.start, part.end, true)}} 
               <img src="icons/checkbox.svg" class="inline w-4" v-if="part.validated" />
@@ -55,7 +56,7 @@ DevD.component("work-timer", {
     <div :class="{invisible: selectedPart == null}">
           <hr class="my-1 border border-blue-400">
           <div class="text-right italic">Part {{ selectedPartIdIfNotNull }}</div>
-          Type: <select name="activitytype" :value="selectedPartTypeIfNotNull" v-model="newPartForm.type">
+          Type: <select name="activitytype" v-model="newPartForm.type">
           <option value="1">Maintenance</option>
           <option value="2">Support utilisateurs</option>
           <option value="3">Documentation</option>
@@ -78,11 +79,10 @@ DevD.component("work-timer", {
   data() {
     return {
       //Timers for work and break times
-      currentWorkTimer: 0,
+      diffTimeBetweenStartAndNow: null,
       currentBreakTimer: 0,
       selectedPart: null,
-      currentPartConvertedTime: 0,
-      currentPartType: 0,
+      currentCount: null, //part currently counted by timers
       startBtnDisabled: false,
       breakBtnDisabled: false,
       newPartForm: {
@@ -129,13 +129,30 @@ DevD.component("work-timer", {
     workCounter() {
       console.log("workcounter");
       setInterval(() => {
-        this.currentWorkTime++;
+        this.diffTimeBetweenStartAndNow = this.diffTimeInHours(
+          this.currentCount.start,
+          new Date(),
+          false,
+          true
+        );
       }, 1000);
+      this.currentCount = this.initPart();
+    },
+    initPart() {
+      return {
+        id: this.parts.length + 1,
+        validated: false,
+        text: "",
+        type: 1,
+        start: new Date(),
+        end: null,
+        roundedTimeInHours: 0,
+      };
     },
     breakCounter() {
       console.log("breakCounter");
       setInterval(() => {
-        this.currentBreakTime++;
+        this.currentBreakTimer++;
       }, 1000);
     },
     fulldate(date) {
@@ -148,24 +165,40 @@ DevD.component("work-timer", {
       );
     },
     timeInHourMinutes(date) {
-      nbHours = date.getHours();
-      if (nbHours < 10) {
-        nbHours = "0" + nbHours;
+      console.log(date);
+      console.log("asf");
+      if (date != null && date != undefined && date != 0) {
+        nbHours = date.getHours();
+        if (nbHours < 10) {
+          nbHours = "0" + nbHours;
+        }
+        nbMinutes = date.getMinutes();
+        if (nbMinutes < 10) {
+          nbMinutes = "0" + nbMinutes;
+        }
+        return nbHours + ":" + nbMinutes;
+      } else {
+        return "00:00";
       }
-      nbMinutes = date.getMinutes();
-      if (nbMinutes < 10) {
-        nbMinutes = "0" + nbMinutes;
-      }
-      return nbHours + ":" + nbMinutes;
     },
-    diffTimeInHours(start, end, humanValue = false) {
+    diffTimeInHours(start, end, humanValue = false, dateType = false) {
       diff = end - start;
       console.log(start);
       console.log(end);
       console.log(diff);
       diffInDate = new Date(diff);
+
+      //removed the 1 hour (strange problem)
+      console.log(diffInDate);
+      console.log("hey");
+      diffInDate.setHours(diffInDate.getHours() - 1);
+      console.log(diffInDate);
+
+      if (dateType == true) {
+        return diffInDate;
+      }
       nbHours =
-        diffInDate.getHours() - 1 + "." + diffInDate.getMinutes().toFixed(0);
+        diffInDate.getHours() + "." + diffInDate.getMinutes().toFixed(0);
       if (humanValue == true) {
         nbHours += "h";
       }
@@ -208,8 +241,20 @@ DevD.component("work-timer", {
       }
       return 0;
     },
+    saveNewPartFromTimers() {
+      if (this.currentCount != null) {
+        this.currentCount.end = new Date();
+        this.parts.push(this.currentCount);
+
+        this.currentCount = this.initPart();
+        this.diffTimeBetweenStartAndNow = 0;
+      }
+    },
   },
   computed: {
+    currentWorkTimerInHoursMinutes() {
+      return this.timeInHourMinutes(this.diffTimeBetweenStartAndNow);
+    },
     totalWorkTime() {
       total = 0;
       Array.prototype.forEach.call(this.parts, function (part) {
@@ -229,9 +274,7 @@ DevD.component("work-timer", {
         total += parseFloat(nbHours);
         console.log(total);
       });
-      if (humanValue == true) {
-        total += "h";
-      }
+      total += "h";
       return total; //calculate the total work time with all parts
     },
     totalBreakTime() {
