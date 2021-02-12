@@ -9,7 +9,7 @@ DevD.component("work-timer", {
       <div class="inline-block">
         <comp-button :disabled="startBtnDisabled" name="Work Timer ON" eventname="start-click" @start-click="workCounter"
           link=""></comp-button>
-          <comp-button :disabled="breakBtnDisabled" name="Break Timer ON" eventname="break-click" @break-click="breakCounter"
+          <comp-button :disabled="breakBtnDisabled" name="Break Timer ON" eventname="start-click" @start-click="breakCounter"
             link=""></comp-button>
       </div>
       <div>
@@ -31,7 +31,7 @@ DevD.component("work-timer", {
         <h4 class="text-lg">Total work time: {{ totalWorkTime }}</h4>
         <h4 class="text-lg">Total break time: {{ totalBreakTime }}</h4>
         <div class="pt-1">
-        <comp-button name="New part" eventname="newpart-click" @newpart-click="newPart" link=""></comp-button>
+        <comp-button name="New part" eventname="newpart-click" @newpart-click="saveNewPartForm" link=""></comp-button>
         </div>
       </div>
     </div>
@@ -41,16 +41,21 @@ DevD.component("work-timer", {
           <h6 class="text-xl">Saved parts</h6>
           <div>
             <ol>
-              <li class="pl-1 cursor-pointer hover:bg-yellow-400" v-for="part in parts">{{ part.number + ". " + this.timeInHourMinutes(part.start) + "-" + this.timeInHourMinutes(part.end) + " - " + diffTimeInHours(part.start, part.end)}} 
+              <li class="pl-1 cursor-pointer hover:bg-yellow-400" v-for="part in parts" :class="{'bg-yellow-300': thePartIsSelected(part.id)}" @click="loadPart(part.id)">{{ part.id + ". " + this.timeInHourMinutes(part.start) + "-" + this.timeInHourMinutes(part.end) + " - " + diffTimeInHours(part.start, part.end, true)}} 
               <img src="icons/checkbox.svg" class="inline w-4" v-if="part.validated" />
               <img src="icons/checked.png" class="inline w-4" v-if="!part.validated" />
               </li>
             </ol>
           </div>
-          <div :class="{invisible: selectedPart == null}">
+          
+        </div>
+      </div>
+    </div>
+    </div>
+    <div :class="{invisible: selectedPart == null}">
           <hr class="my-1 border border-blue-400">
-          Choose a type: <br>
-          <select name="activitytype">
+          <div class="text-right italic">Part {{ selectedPartIdIfNotNull }}</div>
+          Type: <select name="activitytype" :value="selectedPartTypeIfNotNull" v-model="newPartForm.type">
           <option value="1">Maintenance</option>
           <option value="2">Support utilisateurs</option>
           <option value="3">Documentation</option>
@@ -64,15 +69,11 @@ DevD.component("work-timer", {
           <option value="11">Absence</option>
           <option value="12">Cours Matu</option>
           <option value="13">Test</option></select>
-          <br>Converted time:<br>
-          <input class="w-10 px-1" type="text" name="duration" step="0.5" max="10" min="0.5" value="4.5" disabled v-model="selectedPartConvertedTimeIfNotNull"><br>
-          <textarea class="w-full p-1 mt-1" placeholder="Describe what was the work in this part...">{{ selectedPartTextIfNotNull }}</textarea>
-          <comp-button name="Save here" eventname="" link=" ">Save here</comp-button>
+          Converted time:
+          <input class="w-10 px-1" type="text" name="duration" step="0.5" max="10" min="0.5" value="4.5" v-model="newPartForm.roundedTimeInHours"><br>
+          <textarea rows="3" v-model="newPartForm.text" class="w-full p-1 mt-1" placeholder="Describe what was the work in this part...">{{ selectedPartTextIfNotNull }}</textarea>
+          <p class="text-sm text-right text-gray-400 font-normal">Automatically saved...</p>
           </div>
-        </div>
-      </div>
-    </div>
-    </div>
   </div>`,
   data() {
     return {
@@ -83,42 +84,56 @@ DevD.component("work-timer", {
       currentPartConvertedTime: 0,
       currentPartType: 0,
       startBtnDisabled: false,
-      breakBtnDisabled: true,
+      breakBtnDisabled: false,
+      newPartForm: {
+        id: null,
+        validated: false,
+        text: "",
+        type: 4,
+        start: new Date("2020-03-04 12:03:02"),
+        end: new Date("2020-03-04 12:30:02"),
+        roundedTimeInHours: 0,
+      },
       parts: [
         {
-          number: 1,
+          id: 1,
           validated: true,
-          text: "test texte",
+          text: "partie meeting",
+          type: 4,
           start: new Date("2020-03-04 12:03:02"),
           end: new Date("2020-03-04 12:30:02"),
-          humanTime: "156 min",
+          roundedTimeInHours: 0,
         },
         {
-          number: 1,
+          id: 2,
           validated: false,
-          text: "test texte",
+          text: "matin productif",
+          type: 10,
           start: new Date("2020-03-04 08:32:02"),
           end: new Date("2020-03-04 12:20:02"),
-          humanTime: "156 min",
+          roundedTimeInHours: 0,
         },
         {
-          number: 1,
+          id: 3,
           validated: true,
-          text: "test texte",
+          type: 9,
+          text: "début de journée remplie",
           start: new Date("2020-03-04 08:08:02"),
           end: new Date("2020-03-04 14:25:02"),
-          humanTime: "156 min",
+          roundedTimeInHours: 0,
         },
       ],
     };
   },
   methods: {
     workCounter() {
+      console.log("workcounter");
       setInterval(() => {
         this.currentWorkTime++;
       }, 1000);
     },
     breakCounter() {
+      console.log("breakCounter");
       setInterval(() => {
         this.currentBreakTime++;
       }, 1000);
@@ -156,14 +171,45 @@ DevD.component("work-timer", {
       }
       return nbHours;
     },
-  },
-  computed: {
+    loadPart(partId) {
+      cool = true;
+      console.log("loading part");
+      if (partId == null) {
+        this.selectedPart = null;
+      } else {
+        Array.prototype.forEach.call(this.parts, function (part) {
+          console.log(part.id);
+          if (part.id == partId) {
+            partFound = part;
+            console.log("trouvé ");
+            console.log(this.selectedPart);
+            cool = false;
+          }
+        });
+      }
+      this.selectedPart = partFound;
+      this.newPartForm = this.selectedPart;
+    },
+    thePartIsSelected(givenId) {
+      if (this.selectedPart == null) {
+        return false;
+      }
+      return this.selectedPart.id == givenId;
+    },
     selectedPartConvertedTimeIfNotNull() {
-      if (this.currentPartConvertedTime != null) {
-        return this.currentPartConvertedTime.time; //the time rounded to the half point under.
+      if (this.selectedPart != null) {
+        diff = this.diffTimeInHours(
+          this.selectedPart.start,
+          this.selectedPart.end,
+          false
+        );
+        this.newPartForm.roundedTimeInHours = diff;
+        return diff;
       }
       return 0;
     },
+  },
+  computed: {
     totalWorkTime() {
       total = 0;
       Array.prototype.forEach.call(this.parts, function (part) {
@@ -194,6 +240,18 @@ DevD.component("work-timer", {
     selectedPartTextIfNotNull() {
       if (this.selectedPart != null) {
         return this.selectedPart.text;
+      }
+      return "";
+    },
+    selectedPartTypeIfNotNull() {
+      if (this.selectedPart != null) {
+        return this.selectedPart.type;
+      }
+      return "";
+    },
+    selectedPartIdIfNotNull() {
+      if (this.selectedPart != null) {
+        return this.selectedPart.id;
       }
       return "";
     },
