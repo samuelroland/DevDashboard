@@ -10,25 +10,17 @@ DevD.component("strings-stats", {
     </textarea>
     <ul>
         <li>{{ totalChars }} chars</li>
-        <li>{{ totalWords }} words (only ' ' as separator)</li>
+        <li>{{ totalWords }} words (' ' as separator)</li>
         <li>{{ totalWordsAdvanced }} words advanced (separators: {{ separatorsListIfTotalWordsAdvanced }})</li>
         <li>Most used word is: X</li>
-        <li><input type="text" placeholder="set a max" v-model="maxCharsToCheck"> chars at max.
-            <span
-                    class="txtgreen">{{ maxCharsToCheckInfo }}</span></li>
-        <li><input type="text" placeholder="search a substring" v-model="substringToSearch"> found
+        <li class="pb-1"><input class="px-1 ml-0 mr-1 bg-green-200 border border-green-500 border-solid rounded-lg disabled:text-white hover:bg-green-300" type="number" placeholder="Set a max" v-model="maxCharsToCheck" v-on:input="calculateAllStats"> chars at max.
+            <span class="txtgreen">{{ maxCharsToCheckInfo }}</span></li>
+        <li class="pb-1"><input class="px-1 ml-0 mr-1 bg-green-200 border border-green-500 border-solid rounded-lg disabled:text-white hover:bg-green-300" type="text" placeholder="search a substring" v-model="substringToSearch"> found
             {{ nbTimesSubstringFound }} times
         </li>
-        <li><input type="checkbox"> <label>Words? </label><input type="text" placeholder="Match a Regex">
+        <li class="pb-1"><input type="checkbox"> <label>Words? </label><input class="px-1 ml-0 mr-1 bg-green-200 border border-green-500 border-solid rounded-lg disabled:text-white hover:bg-green-300" type="text" placeholder="Match a Regex">
             matched X
             times
-        </li>
-        <li>Words founds:
-            <ol>
-                <li v-for="word in this.words">
-                    {{ word }}
-                </li>
-            </ol>
         </li>
     </ul>
 </div>`,
@@ -92,7 +84,29 @@ DevD.component("strings-stats", {
       }
 
       //Count occurrences of a string:
-      //this.nbTimesSubstringFound = this.allIndexOf(this.content, this.substringToSearch).length
+      wordsOccurences = [];
+      wordsOccurencesMoreThan2 = [];
+      Array.prototype.forEach.call(this.words, function (word) {
+        if (wordsOccurences[word] == null) {
+          wordsOccurences[word] = 1;
+        } else {
+          wordsOccurences[word]++;
+        }
+      });
+      console.log(this.words);
+      console.log(wordsOccurences);
+      wordsOccurences = wordsOccurences.sort((a, b) => b - a);
+      Array.prototype.forEach.call(wordsOccurences, function (elem) {
+        console.log(elem);
+        if (elem > 1) {
+          wordsOccurencesMoreThan2.push(elem);
+          console.log("pushed");
+        }
+      });
+
+      console.log("wordsOccurences");
+      console.log(wordsOccurences);
+      console.log(wordsOccurencesMoreThan2);
     },
     //Display or hide error css on text area
     manageErrorCssOnTextarea(display = true) {
