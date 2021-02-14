@@ -16,7 +16,8 @@ DevD.component("work-timer", {
         <div class="flex justify-end pt-1">
           <span class="mr-2">Work Timer</span>
           <input type="text"
-            class="w-16 px-1 bg-blue-100 border border-blue-400 border-solid rounded focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500"
+            class="w-16 px-1 border border-blue-400 border-solid rounded focus:bg-blue-200 focus:border-2 focus:border-solid focus:border-blue-500"
+            :class="{'text-white': workCounterInRun && blueTicTacActive, 'bg-blue-300':workCounterInRun && blueTicTacActive, 'bg-blue-100': !blueTicTacActive}"
             v-model="currentWorkTimerInHoursMinutes" disabled>
         </div>
         <div class="flex justify-end pt-1">
@@ -79,6 +80,8 @@ DevD.component("work-timer", {
   data() {
     return {
       //Timers for work and break times
+      workCounterInRun: false, //if the timer of work time is in run or not
+      blueTicTacActive: false,
       diffTimeBetweenStartAndNow: null,
       currentBreakTimer: 0,
       selectedPart: null,
@@ -127,6 +130,7 @@ DevD.component("work-timer", {
   },
   methods: {
     workCounter() {
+      this.workCounterInRun = true;
       console.log("workcounter");
       setInterval(() => {
         //start interval of reloading set to 10 seconds
@@ -138,6 +142,11 @@ DevD.component("work-timer", {
           true
         );
       }, 10000);
+      //Each second, invert the value of this.blueTicTacActive to change colors (text and background) of the timers when in run
+      setInterval(() => {
+        this.blueTicTacActive = !this.blueTicTacActive;
+        console.log(this.blueTicTacActive);
+      }, 1000);
       this.currentCount = this.initPart();
     },
     initPart() {
@@ -199,8 +208,10 @@ DevD.component("work-timer", {
       if (dateType == true) {
         return diffInDate;
       }
-      nbHours =
-        diffInDate.getHours() + "." + (diffInDate.getMinutes() / 60).toFixed(2);
+      nbHours = (
+        (diffInDate.getHours() * 60 + diffInDate.getMinutes()) /
+        60
+      ).toFixed(2); //calculate the number of minutes and divide by 60, to find the number of hours
       if (humanValue == true) {
         nbHours += "h";
       }
